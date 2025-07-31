@@ -1,0 +1,13 @@
+.space-style {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+  background-color: #c9d0dbff;
+  padding: 20px;
+  
+}
+.h3{
+    color: rgb(128, 117, 117);
+    font-style: oblique;
+}
