@@ -8,12 +8,13 @@ export interface IKart {
   type: string;
   projectGoal: string;
   projectName: string;
+  taskType?: "xs" | "sm" | "md" | "lg";
 }
 
 const { Header, Content, Footer } = Layout;
-const labels = ['Board', 'Plans', 'Link', 'Create'];
+const labels = ['Board', 'Projects', 'Link', 'Create'];
 
-const MyMenu :React.FC = () => {
+const MyMenu: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [kartlar, setKartlar] = useState<IKart[]>([]);
   useEffect(() => {
@@ -30,7 +31,7 @@ const MyMenu :React.FC = () => {
 
   const fetchKartlar = async () => {
     const response = await fetch('http://localhost:3001/api/deneme');
-    
+
     const data = await response.json();
     setKartlar(data);
 
@@ -56,6 +57,15 @@ const MyMenu :React.FC = () => {
         <Button type="primary" onClick={handleOpenModal}>
           {label}
         </Button>
+      ) : label === 'Link' ? (
+        <>
+        <Modal >
+        <MyMiniForm veriGonder={veriGonder} />
+    
+        
+      </Modal>
+          {label}
+        </>
       ) : (
         label
       ),
@@ -104,6 +114,8 @@ const MyMenu :React.FC = () => {
         footer={null}
       >
         <MyMiniForm veriGonder={veriGonder} />
+    
+        
       </Modal>
     </Layout>
   );

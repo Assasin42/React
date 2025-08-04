@@ -1,31 +1,53 @@
-import React from 'react';
-import { Flex, Tag } from 'antd';
+// MyTag.tsx
+import React, { useEffect, useState } from 'react';
+import { Form, Checkbox, Tag } from 'antd';
+import axios from 'axios';
 
-const tagsData = ['Ziraat', 'Ziraat Teknoloji', 'Finans', 'Yazılım'];
+type Props = {
+  readonly?: boolean; 
+  etiketler?: string[];
+};
 
-const MyTag: React.FC = () => {
-  const [selectedTags, setSelectedTags] = React.useState<string[]>(['Movies']);
-  const handleChange = (tag: string, checked: boolean) => {
-    const nextSelectedTags = checked
-      ? [...selectedTags, tag]
-      : selectedTags.filter((t) => t !== tag);
-    console.log('You are interested in: ', nextSelectedTags);
-    setSelectedTags(nextSelectedTags);
-  };
+const etiketListesi = ['Ziraat', 'Ziraat Teknoloji', 'Yazılım', 'Finans'];
 
+const MyTag = ({ readonly = false }: Props) => {
+  const [etiketler, setEtiketler] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (readonly) {
+      // Etiketleri backend'den al (örnek GET endpoint)
+      axios.get('http://localhost:3001/api/deneme')  // ← senin backend endpoint'ine göre ayarla
+        .then((res) => {
+          setEtiketler(res.data); // Örn: ["React", "Vue"]
+        })
+        .catch((err) => {
+          console.error("Etiket çekme hatası:", err);
+        });
+    }
+  }, [readonly]);
+
+  if (readonly) {
+    return (
+      <div style={{ marginTop: 12 }}>
+        <h4>Seçilen Etiketler:</h4>
+        {etiketler.map((etiket) => (
+          <Tag color="blue" key={etiket}>
+            {etiket}
+          </Tag>
+        ))}
+      </div>
+    );
+  }
+
+  // Formda seçim yapma kısmı
   return (
-    <Flex gap={4} wrap align="center">
-      <span style={{ color: '#c92121ff' }}>Etiket Seçiniz:</span>
-      {tagsData.map<React.ReactNode>((tag) => (
-        <Tag.CheckableTag
-          key={tag}
-          checked={selectedTags.includes(tag)}
-          onChange={(checked) => handleChange(tag, checked)}
-        >
-          {tag}
-        </Tag.CheckableTag>
-      ))}
-    </Flex>
+    <Form.Item
+      label="Etiket Seç"
+      name="etiketler"
+      rules={[{ required: true, message: 'En az bir etiket seçin' }]}
+    >
+      <Checkbox.Group options={etiketListesi} />
+    </Form.Item>
   );
 };
 

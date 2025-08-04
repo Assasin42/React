@@ -23,7 +23,7 @@ const Kartlar: React.FC<KartlarProps> = ({ data }) => {
         <h3 className='h3'>İlk kolon</h3>
         <Space className='space-style'  direction="vertical" size="middle" >
           {data.filter((kart) => kart.type === 'proje').map((kart, index) => (
-          <Card key={index} title={kart.type} style={{ width: 180, height: 213 }}>
+          <Card key={index} title={kart.type} >
               <p>Proje Adı: {kart.projectName}</p>
               <p>Proje Amacı: {kart.projectGoal}</p>
             </Card>
@@ -35,10 +35,10 @@ const Kartlar: React.FC<KartlarProps> = ({ data }) => {
         <h3 className='h3'>İkinci kolon</h3>
         <Space className="space-style" direction="vertical" size="middle" >
         {data.filter((kart) => kart.type === 'görev').map((kart, index) => (
-          <Card key={index} title={kart.type} style={{ width: 180, height: 213 }}>
-              <p>Proje Adı: {kart.projectName}</p>
-              <p>Proje Amacı: {kart.projectGoal}</p>
-              
+          <Card key={index} title={kart.type} >
+              <p>Görev Adı: {kart.projectName}</p>
+              <p>Görev Amacı: {kart.projectGoal}</p>
+              <p>Görevin Büyüklüğü: {kart.taskType}</p>
             </Card>
           ))}    
         </Space>
