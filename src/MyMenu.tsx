@@ -3,6 +3,7 @@ import { Button, Layout, Menu, Modal, theme, Form } from 'antd';
 import MyMiniForm from './MyMiniform';
 import Kartlar from './Kartlar';
 import axios from 'axios';
+import MyList from './Listeler';
 
 export interface IKart {
   type: string;
@@ -12,11 +13,14 @@ export interface IKart {
 }
 
 const { Header, Content, Footer } = Layout;
-const labels = ['Board', 'Projects', 'Link', 'Create'];
+const labels = ['Board', 'Projects','Backlog'];
+
 
 const MyMenu: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [kartlar, setKartlar] = useState<IKart[]>([]);
+  const [selectedTab, setSelectedTab] = useState<number>(1);
+  const [filterType, setFilterType] = useState<string>('görev');
   useEffect(() => {
     fetchKartlar();
   }, []);
@@ -27,6 +31,16 @@ const MyMenu: React.FC = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+ const handleTabChange = (e:any) => {
+  //Number.parseInt(e.key)
+  
+    setSelectedTab(e.key); 
+    if (e.key === "2") {
+    setFilterType("proje");  // Projects'e tıklanınca sadece proje gözüksün
+  } else {
+    setFilterType("görev");     // Diğer durumlarda hepsi görünsün
+  }
   };
 
   const fetchKartlar = async () => {
@@ -52,23 +66,8 @@ const MyMenu: React.FC = () => {
   };
   const items = labels.map((label, index) => ({
     key: index + 1,
-    label:
-      label === 'Create' ? (
-        <Button type="primary" onClick={handleOpenModal}>
-          {label}
-        </Button>
-      ) : label === 'Link' ? (
-        <>
-        <Modal >
-        <MyMiniForm veriGonder={veriGonder} />
-    
-        
-      </Modal>
-          {label}
-        </>
-      ) : (
-        label
-      ),
+    label:label
+      
   }));
 
   return (
@@ -84,8 +83,9 @@ const MyMenu: React.FC = () => {
           mode="horizontal"
           defaultSelectedKeys={['1']}
           items={items}
-          style={{ flex: 1, minWidth: 0 }}
+          onClick={handleTabChange}
         />
+        <Button onClick={handleOpenModal} type='primary' style={{ marginLeft: 10 }}>Create</Button>
       </Header>
       <Content style={{ padding: '0 50px' }}>
         <Content style={{ padding: '40px 4px 30px 4px' }}>
@@ -97,7 +97,8 @@ const MyMenu: React.FC = () => {
               borderRadius: 5,
             }}
           >
-            <Kartlar data={kartlar} />
+            { selectedTab == 1 ? <Kartlar data={kartlar} filterType={filterType} /> : selectedTab == 2 ? <MyList data={kartlar} filterType={filterType} /> : null }
+           
           </div>
         </Content>
 
@@ -106,7 +107,6 @@ const MyMenu: React.FC = () => {
         Ziraat Teknoloji ©{new Date().getFullYear()} Ziraat Bankası tarafından geliştirildi
       </Footer>
 
-      {/* 🔽 Modal burada */}
       <Modal
         title="Yeni Kayıt Oluştur"
         open={isModalOpen}
@@ -114,7 +114,6 @@ const MyMenu: React.FC = () => {
         footer={null}
       >
         <MyMiniForm veriGonder={veriGonder} />
-    
         
       </Modal>
     </Layout>

@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Kartlar from './Kartlar';
 import MyMenu from './MyMenu';
 import Deneme from './hareketdeneme';
+import MyList from './Listeler';
 function App() {
   return (
     <div>
       <MyMenu/>
-      
-      
     </div>
   );
 }

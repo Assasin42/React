@@ -6,9 +6,10 @@ import './Kartlar.css';
 // ...existing code...
 type KartlarProps = {
   data: IKart[];
+  filterType: string | null;
 };
 
-const Kartlar: React.FC<KartlarProps> = ({ data }) => {
+const Kartlar: React.FC<KartlarProps> = ({ data, filterType }) => {
   // ...use onFetch as needed...
 
 
@@ -18,6 +19,7 @@ const Kartlar: React.FC<KartlarProps> = ({ data }) => {
     <h3 className='h3'>Talepler</h3>
     <hr />
       <Row gutter={16} >
+        {(filterType === null || filterType === "proje") && data.some(kart => kart.type === 'proje') && (
         <Col span={4}>
         
         <h3 className='h3'>İlk kolon</h3>
@@ -30,7 +32,8 @@ const Kartlar: React.FC<KartlarProps> = ({ data }) => {
           ))}
         </Space>
         </Col>
-      
+        )}
+        {(filterType === null || filterType === "görev") && data.some(kart => kart.type === 'görev') && (
         <Col span={4}>
         <h3 className='h3'>İkinci kolon</h3>
         <Space className="space-style" direction="vertical" size="middle" >
@@ -38,11 +41,12 @@ const Kartlar: React.FC<KartlarProps> = ({ data }) => {
           <Card key={index} title={kart.type} >
               <p>Görev Adı: {kart.projectName}</p>
               <p>Görev Amacı: {kart.projectGoal}</p>
-              <p>Görevin Büyüklüğü: {kart.taskType}</p>
+              <p>Görevin Büyüklüğü: {kart.taskType ?? "Belirtilmedi"}</p>
             </Card>
           ))}    
         </Space>
         </Col>
+        )}
       </Row>
     </>
   );
