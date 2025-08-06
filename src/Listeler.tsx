@@ -41,7 +41,7 @@ const MyList: React.FC<ListelerProps> = (props:ListelerProps) => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a>Invite {record.name}</a>
+          <a>Güncelle {record.name}</a>
           <a onClick={() => handleDelete(record.key)}>Delete</a>
         </Space>
       ),
