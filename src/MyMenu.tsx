@@ -4,7 +4,7 @@ import MyMiniForm from './MyMiniform';
 import Kartlar from './Kartlar';
 import axios from 'axios';
 import MyList from './Listeler';
-import VerticalMenu from './VerticalMenu';
+
 import type { MenuProps } from 'antd';
 import {
   UserOutlined,
@@ -17,6 +17,7 @@ export interface IKart {
   projectGoal: string;
   projectName: string;
   taskType?: "xs" | "sm" | "md" | "lg";
+  etiketler?: string[];
 }
 
 const { Header, Content, Sider, Footer } = Layout;
@@ -118,7 +119,7 @@ const MyMenu: React.FC = () => {
       </Sider>          
             
          
-         <Layout >
+         <Layout>
       <Content style={{ padding: '0 10px' }}>
         <Content style={{ padding: '40px 4px 0px 4px' }}>
           <div

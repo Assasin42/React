@@ -37,14 +37,14 @@ const MyMiniForm: React.FC<any> = (props: any) => {
 
           <Form.Item label="Proje Amacı" name="projectGoal">
             <Input placeholder="Proje amacını girin" />
-          </Form.Item> 
-          
+          </Form.Item>
+
           <Form.Item label="Etiketler" name="tags">
-          <MyTag/>
+            <MyTag />
           </Form.Item>
 
           <br></br>
-            
+
         </>
 
       )}
@@ -69,7 +69,8 @@ const MyMiniForm: React.FC<any> = (props: any) => {
             </Form.Item>
           </Flex>
           <Form.Item label="Etiketler" name="tags">
-          <MyTag/>
+
+            <MyTag />
           </Form.Item>
           <br></br>
         </>

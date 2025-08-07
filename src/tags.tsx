@@ -1,54 +1,93 @@
-// MyTag.tsx
-import React, { useEffect, useState } from 'react';
-import { Form, Checkbox, Tag } from 'antd';
-import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
+import type { InputRef } from 'antd';
+import { Input, Tag, theme } from 'antd';
 
-type Props = {
-  readonly?: boolean; 
-  etiketler?: string[];
-};
-
-const etiketListesi = ['Ziraat', 'Ziraat Teknoloji', 'Yazılım', 'Finans'];
-
-const MyTag = ({ readonly = false }: Props) => {
-  const [etiketler, setEtiketler] = useState<string[]>([]);
+const MyTag: React.FC = () => {
+  const { token } = theme.useToken();
+  const [tags, setTags] = useState(['Tag 1', 'Tag 2', 'Tag 3']);
+  const [inputVisible, setInputVisible] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const inputRef = useRef<InputRef>(null);
 
   useEffect(() => {
-    if (readonly) {
-      // Etiketleri backend'den al (örnek GET endpoint)
-      axios.get('http://localhost:3001/api/deneme')  // ← senin backend endpoint'ine göre ayarla
-        .then((res) => {
-          setEtiketler(res.data); // Örn: ["React", "Vue"]
-        })
-        .catch((err) => {
-          console.error("Etiket çekme hatası:", err);
-        });
+    if (inputVisible) {
+      inputRef.current?.focus();
     }
-  }, [readonly]);
+  }, [inputVisible]);
 
-  if (readonly) {
-    return (
-      <div style={{ marginTop: 12 }}>
-        <h4>Seçilen Etiketler:</h4>
-        {etiketler.map((etiket) => (
-          <Tag color="blue" key={etiket}>
-            {etiket}
-          </Tag>
-        ))}
-      </div>
-    );
-  }
+  const handleClose = (removedTag: string) => {
+    const newTags = tags.filter((tag) => tag !== removedTag);
+    console.log(newTags);
+    setTags(newTags);
+  };
 
-  // Formda seçim yapma kısmı
+  const showInput = () => {
+    setInputVisible(true);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleInputConfirm = () => {
+    if (inputValue && tags.indexOf(inputValue) === -1) {
+      setTags([...tags, inputValue]);
+    }
+    setInputVisible(false);
+    setInputValue('');
+  };
+
+  const forMap = (tag: string) => (
+    <span key={tag} style={{ display: 'inline-block' }}>
+      <Tag
+        closable
+        onClose={(e) => {
+          e.preventDefault();
+          handleClose(tag);
+        }}
+      >
+        {tag}
+      </Tag>
+    </span>
+  );
+
+  const tagChild = tags.map(forMap);
+
+  const tagPlusStyle: React.CSSProperties = {
+    background: token.colorBgContainer,
+    borderStyle: 'dashed',
+  };
+
   return (
-    <Form.Item
-      label="Etiket Seç"
-      name="etiketler"
-      rules={[{ required: true, message: 'En az bir etiket seçin' }]}
-    >
-      <Checkbox.Group options={etiketListesi} />
-    </Form.Item>
+    <>
+      <div style={{ marginBottom: 16 }}>
+        
+          
+        
+          {tagChild}
+        
+      </div>
+      {inputVisible ? (
+        <Input
+          ref={inputRef}
+          type="text"
+          size="small"
+          style={{ width: 78 }}
+          value={inputValue}
+          onChange={handleInputChange}
+          onBlur={handleInputConfirm}
+          onPressEnter={handleInputConfirm}
+        />
+      ) : (
+        <Tag onClick={showInput} style={tagPlusStyle}>
+          <PlusOutlined /> New Tag
+        </Tag>
+      )}
+    </>
   );
 };
+
+
 
 export default MyTag;
