@@ -20,13 +20,13 @@ const MyList: React.FC<ListelerProps> = (props:ListelerProps) => {
 
   const columns: TableProps<any>['columns'] = [
     {
-      title: 'Name',
+      title: 'Tür',
       dataIndex: 'type',
       key: 'name',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Tip',
+      title: 'Hedef',
       dataIndex: 'projectGoal',
       key: 'tip',
     },
@@ -35,7 +35,43 @@ const MyList: React.FC<ListelerProps> = (props:ListelerProps) => {
       dataIndex: 'projectName',
       key: 'amaci',
     },
+     {
+                title: 'Tags',
+                key: 'tags',
+                dataIndex: 'tags',
+                render: (_, { tags }) => (
+      <>
+        {(tags ?? []).map((tags: string) => { // ✅ null ise boş array
+          let color = tags.length > 4 ? 'geekblue' : 'green';
+          if (tags === 'Ziraat') {
+            color = 'volcano';
+          }
+        if(tags === 'Finans')
+          {
+            color = 'green';
+          }
+        if(tags === 'Ziraat Teknoloji')
+          {
+            color = 'blue';
+          }
+        if(tags === 'Yazılım')
+          {
+            color = 'purple';
+          } 
+       else {
+        <p>Belirtilmedi</p>
+       }
     
+
+          return (
+            <Tag color={color} key={tags}>
+              {tags.toUpperCase()}
+            </Tag>
+                      );
+                    })}
+                  </>
+                ),
+              },
     {
       title: 'Action',
       key: 'action',

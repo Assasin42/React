@@ -1,93 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import type { InputRef } from 'antd';
-import { Input, Tag, theme } from 'antd';
+import React from 'react';
+import { Flex, Tag } from 'antd';
 
-const MyTag: React.FC = () => {
-  const { token } = theme.useToken();
-  const [tags, setTags] = useState(['Tag 1', 'Tag 2', 'Tag 3']);
-  const [inputVisible, setInputVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const inputRef = useRef<InputRef>(null);
+const tagsData = ['Ziraat', 'Finans', 'Ziraat Teknoloji', 'Yazılım'];
 
-  useEffect(() => {
-    if (inputVisible) {
-      inputRef.current?.focus();
-    }
-  }, [inputVisible]);
+interface MyTagProps {
+  value?: string[];
+  onChange?: (value: string[]) => void;
+}
 
-  const handleClose = (removedTag: string) => {
-    const newTags = tags.filter((tag) => tag !== removedTag);
-    console.log(newTags);
-    setTags(newTags);
-  };
+const MyTag: React.FC<MyTagProps> = ({ value = [], onChange }) => {
+  const handleChange = (tag: string, checked: boolean) => {
+    const nextSelectedTags = checked
+      ? [...value, tag]
+      : value.filter((t) => t !== tag);
 
-  const showInput = () => {
-    setInputVisible(true);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleInputConfirm = () => {
-    if (inputValue && tags.indexOf(inputValue) === -1) {
-      setTags([...tags, inputValue]);
-    }
-    setInputVisible(false);
-    setInputValue('');
-  };
-
-  const forMap = (tag: string) => (
-    <span key={tag} style={{ display: 'inline-block' }}>
-      <Tag
-        closable
-        onClose={(e) => {
-          e.preventDefault();
-          handleClose(tag);
-        }}
-      >
-        {tag}
-      </Tag>
-    </span>
-  );
-
-  const tagChild = tags.map(forMap);
-
-  const tagPlusStyle: React.CSSProperties = {
-    background: token.colorBgContainer,
-    borderStyle: 'dashed',
+    onChange?.(nextSelectedTags); // Form'a bildir
   };
 
   return (
-    <>
-      <div style={{ marginBottom: 16 }}>
-        
-          
-        
-          {tagChild}
-        
-      </div>
-      {inputVisible ? (
-        <Input
-          ref={inputRef}
-          type="text"
-          size="small"
-          style={{ width: 78 }}
-          value={inputValue}
-          onChange={handleInputChange}
-          onBlur={handleInputConfirm}
-          onPressEnter={handleInputConfirm}
-        />
-      ) : (
-        <Tag onClick={showInput} style={tagPlusStyle}>
-          <PlusOutlined /> New Tag
-        </Tag>
-      )}
-    </>
+    <Flex gap={4} wrap align="center">
+      <span>Categories:</span>
+      {tagsData.map((tag) => (
+        <Tag.CheckableTag
+          key={tag}
+          checked={value.includes(tag)}
+          onChange={(checked) => handleChange(tag, checked)}
+        >
+          {tag}
+        </Tag.CheckableTag>
+      ))}
+    </Flex>
   );
 };
-
-
 
 export default MyTag;

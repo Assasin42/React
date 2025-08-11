@@ -68,7 +68,7 @@ const MyMiniForm: React.FC<any> = (props: any) => {
               </Radio.Group>
             </Form.Item>
           </Flex>
-          <Form.Item label="Etiketler" name="tags">
+          <Form.Item label="tags" name="tags">
 
             <MyTag />
           </Form.Item>
