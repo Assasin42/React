@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from 'react';
 import { Card, Col, Row, Space ,Tag } from 'antd';
 import { IKart } from './MyMenu';
-import './Kartlar.css';
+
 
 // ...existing code...
 type KartlarProps = {

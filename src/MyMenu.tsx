@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Layout, Menu, Modal, theme, Form, Breadcrumb } from 'antd';
-import MyMiniForm from './MyMiniform';
-import Kartlar from './Kartlar';
+import MyMiniForm from './Form/MyMiniform';
+import Kartlar from './Cards';
 import axios from 'axios';
-import MyList from './Projeler_kismi';
-import Mytask from './Backlog_Gorevkismi';
-import Dashboard from './Tasimacilik';
+import MyList from './Backlog/Projects_section';
+import Dashboard from './Backlog/Backlog';
 import type { MenuProps } from 'antd';
 import {
   UserOutlined,
