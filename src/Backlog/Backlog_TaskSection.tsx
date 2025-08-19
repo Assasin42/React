@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
-import { IKart } from '../MyMenu';
+import { IKart, StatusId } from '../MyMenu';
 import Item from 'antd/es/list/Item';
 
 type ListelerProps = {
   data: IKart[];
   filterType: string | null;
+  status:StatusId;
 };
 
 
 
 const Mytask: React.FC<ListelerProps> = (props: ListelerProps) => {
-  const [data, setData] = useState<any>(props.data.filter((item: IKart) => item.type == props.filterType));
+  const [data, setData] = useState<any>(props.data);
 
   const handleDelete = (keyToDelete: string) => {
     const newData = data.filter((item: any) => item.key !== keyToDelete);
     setData(newData);
   };
-
   const columns: TableProps<any>['columns'] = [
     {
       title: 'Tür',

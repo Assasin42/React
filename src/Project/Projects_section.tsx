@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
 import { IKart } from '../MyMenu';
-import Item from 'antd/es/list/Item';
-type ListelerProps = {
-  data: IKart[];
-  filterType: string | null;
-};
+import { fetchProjeler } from '../Api';
 
 
 
-const MyList: React.FC<ListelerProps> = (props: ListelerProps) => {
-  const [data, setData] = useState<any>(props.data.filter((item: IKart) => item.type == props.filterType));
+
+const MyList: React.FC<any> = () => {
+  const [projeler, setProjeler] = useState<IKart[]>([]);
+  useEffect(() => {
+    fetchProjeler().then((data) => {
+      setProjeler(data);
+    });
+  }, []);
+  
 
   const handleDelete = (keyToDelete: string) => {
-    const newData = data.filter((item: any) => item.key !== keyToDelete);
-    setData(newData);
+    const newData = projeler.filter((item: any) => item.key !== keyToDelete);
+    setProjeler(newData);
   };
 
   const columns: TableProps<any>['columns'] = [
@@ -81,7 +84,7 @@ const MyList: React.FC<ListelerProps> = (props: ListelerProps) => {
     },
   ];
 
-  return <Table<any> columns={columns} dataSource={data} />;
+  return <Table<any> columns={columns} dataSource={projeler} />;
 };
 
 export default MyList;

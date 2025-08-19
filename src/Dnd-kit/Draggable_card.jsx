@@ -25,4 +25,4 @@ function Example() {
     setParent(over ? over.id : null);
   }
 }
-  
+  export default Example;

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Input, Select, Radio, Flex, Button } from 'antd';
 import MyTag from './tags';
-import axios from 'axios';
-import { getValue } from '@testing-library/user-event/dist/utils';
+
+
 
 
 const { Option } = Select;
-const MyMiniForm: React.FC<any> = (props: any) => {
+const MyMiniForm: React.FC<any> = (props:any) => {
   const [form] = Form.useForm();
   const [type, setType] = useState<string | undefined>(undefined);
   /*****************/
@@ -17,7 +17,8 @@ const MyMiniForm: React.FC<any> = (props: any) => {
 
   const onFinish = (values: any) => {
     console.log('Form verisi:', values);
-    props.veriGonder(values)
+    props.veriGonder(values);
+
   };
 
   return (
@@ -68,8 +69,8 @@ const MyMiniForm: React.FC<any> = (props: any) => {
               </Radio.Group>
             </Form.Item>
           </Flex>
-          <Form.Item label="tags" name="tags">
 
+          <Form.Item label="Tags" name="tags">
             <MyTag />
           </Form.Item>
           <br></br>

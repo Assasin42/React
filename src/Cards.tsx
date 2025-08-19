@@ -1,137 +1,214 @@
-import React, { use, useEffect, useState } from 'react';
-import { Card, Col, Row, Space ,Tag } from 'antd';
-import { IKart } from './MyMenu';
+import React, { useEffect, useState } from 'react';
+import { Card, Col, Row, Space, Tag } from 'antd';
+import { IKart, StatusId } from './MyMenu';
+import { fetchKartlar, fetchTodo, fetchInProcess, fetchInreviev, fetchDone } from './Api';
 
 
-// ...existing code...
-type KartlarProps = {
-  data: IKart[];
-  filterType: string | null;
-};
 
-const Kartlar: React.FC<KartlarProps> = ({ data, filterType }) => {
+
+const Kartlar: React.FC<any> = () => {
   // ...use onFetch as needed...
-
-
-
+  
+  const [todoCards, setTodoCards] = useState<IKart[]>([]);
+  const [Inprocess, setInProcess] = useState<IKart[]>([]);
+  const [Inreview, setInreview] = useState<IKart[]>([]);
+  const [Done, setDone] = useState<IKart[]>([]);
+  useEffect(() => {
+    fetchTodo().then((data) => {
+      setTodoCards(data);
+    });
+    fetchInProcess().then((data) => {
+      setInProcess(data);
+    });
+    fetchInreviev().then((data) => {
+      setInreview(data);
+    });
+    fetchDone().then((data) => {
+      setDone(data);
+    });
+  }, [])
   return (
     <>
       <h3 className='h3'>Talepler</h3>
       <hr />
       <Row gutter={16} >
-        {(filterType === null || filterType === "proje") && data.some(kart => kart.type === 'proje') && (
-          <Col span={6}>
-
-            <h3 className='h3'>İlk kolon</h3>
-            <Space className='space-style' direction="vertical" size="middle" >
-              {data.filter((kart) => kart.type === 'proje').map((kart, index) => (
-                <Card key={index} title={kart.type} >
-                  <p>Proje Adı: {kart.projectName}</p>
-                  <p>Proje Amacı: {kart.projectGoal}</p>
-                                  {kart.tags && kart.tags.length > 0 ? (
-    <div>
-      {kart.tags.map((tag: string, i: number) => {
-        let color = tag.length > 5 ? 'geekblue' : 'green';
-         if (tag === 'Ziraat') {
-        color = 'volcano';
-      }
-    if(tag === 'Finans')
-      {
-        color = 'green';
-      }
-    if(tag === 'Ziraat Teknoloji')
-      {
-        color = 'blue';
-      }
-    if(tag === 'Yazılım')
-      {
-        color = 'purple';
-      }
-        return (
-          <Tag color={color} key={i}>
-            {tag}
-          </Tag>
-        );
-      })}
-    </div>
-  ) : (
-    <p>Belirtilmedi</p>
-  )}
-                </Card>
-              ))}
-            </Space>
-          </Col>
-        )}
-        {(filterType === null || filterType === "görev") && data.some(kart => kart.type === 'görev') && (
-          <Col span={6}>
-            <h3 className='h3'>To Do</h3>
-            <Space className="space-style" direction="vertical" size="middle" >
-              {data.filter((kart) => kart.type === 'görev').map((kart, index) => (
+        <Col span={6}>
+          <h3 className='h3'>To Do</h3>
+          <div className='space-style'>
+            <Space direction="vertical" size="middle" >
+              {todoCards.map((kart, index) => (
                 <Card className='Card' key={index} title={kart.type} >
                   <p>Görev Adı: {kart.projectName}</p>
                   <p>Görev Amacı: {kart.projectGoal}</p>
                   <p>Görevin Büyüklüğü: {kart.taskType ?? "Belirtilmedi"}</p>
 
                   {kart.tags && kart.tags.length > 0 ? (
-    <div>
-      {kart.tags.map((tag: string, i: number) => {
-        let color = tag.length > 5 ? 'geekblue' : 'green';
-         if (tag === 'Ziraat') {
-        color = 'volcano';
-      }
-    if(tag === 'Finans')
-      {
-        color = 'green';
-      }
-    if(tag === 'Ziraat Teknoloji')
-      {
-        color = 'blue';
-      }
-    if(tag === 'Yazılım')
-      {
-        color = 'purple';
-      }
-        return (
-          <Tag color={color} key={i}>
-            {tag}
-          </Tag>
-        );
-      })}
-    </div>
-  ) : (
-    <p>Belirtilmedi</p>
-  )}
+                    <div>
+                      {kart.tags.map((tag: string, i: number) => {
+                        let color = tag.length > 5 ? 'geekblue' : 'green';
+                        if (tag === 'Ziraat') {
+                          color = 'volcano';
+                        }
+                        if (tag === 'Finans') {
+                          color = 'green';
+                        }
+                        if (tag === 'Ziraat Teknoloji') {
+                          color = 'blue';
+                        }
+                        if (tag === 'Yazılım') {
+                          color = 'purple';
+                        }
+                        return (
+                          <Tag color={color} key={i}>
+                            {tag}
+                          </Tag>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p>Belirtilmedi</p>
+                  )}
 
                 </Card>
               ))}
             </Space>
-          </Col>
-        )}
-        {(filterType === null || filterType === "görev") && data.some(kart => kart.type === 'görev') && (
-          <Col span={6} >
-            <h3 className='h3'>Inproces</h3>
-            <div className="space-style">
-            </div>
-          </Col>
-        )}
-        {(filterType === null || filterType === "görev") && data.some(kart => kart.type === 'görev') && (
-          <Col span={6}>
-            <h3 className='h3'>İnreview</h3>
-            <div className="space-style">
-            </div>
-          </Col>
-        )}
-        {(filterType === null || filterType === "görev") && data.some(kart => kart.type === 'görev') && (
-          <Col span={6}>
-            <h3 className='h3' >Done</h3>
-            <div className="space-style">
-            </div>
-          </Col>
-        )}
+          </div>
+        </Col>
+
+
+        <Col span={6} >
+          <h3 className='h3'>Inprocess</h3>
+          <div className="space-style">
+            <Space direction="vertical" size="middle" >
+              {Inprocess.map((kart, index) => (
+                <Card className='Card' key={index} title={kart.type} >
+                  <p>Görev Adı: {kart.projectName}</p>
+                  <p>Görev Amacı: {kart.projectGoal}</p>
+                  <p>Görevin Büyüklüğü: {kart.taskType ?? "Belirtilmedi"}</p>
+
+                  {kart.tags && kart.tags.length > 0 ? (
+                    <div>
+                      {kart.tags.map((tag: string, i: number) => {
+                        let color = tag.length > 5 ? 'geekblue' : 'green';
+                        if (tag === 'Ziraat') {
+                          color = 'volcano';
+                        }
+                        if (tag === 'Finans') {
+                          color = 'green';
+                        }
+                        if (tag === 'Ziraat Teknoloji') {
+                          color = 'blue';
+                        }
+                        if (tag === 'Yazılım') {
+                          color = 'purple';
+                        }
+                        return (
+                          <Tag color={color} key={i}>
+                            {tag}
+                          </Tag>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p>Belirtilmedi</p>
+                  )}
+
+                </Card>
+              ))}
+            </Space>
+          </div>
+        </Col>
+
+
+        <Col span={6}>
+          <h3 className='h3'>İnreview</h3>
+          <div className="space-style">
+            <Space direction="vertical" size="middle" >
+              {Inreview.map((kart, index) => (
+                <Card className='Card' key={index} title={kart.type} >
+                  <p>Görev Adı: {kart.projectName}</p>
+                  <p>Görev Amacı: {kart.projectGoal}</p>
+                  <p>Görevin Büyüklüğü: {kart.taskType ?? "Belirtilmedi"}</p>
+
+                  {kart.tags && kart.tags.length > 0 ? (
+                    <div>
+                      {kart.tags.map((tag: string, i: number) => {
+                        let color = tag.length > 5 ? 'geekblue' : 'green';
+                        if (tag === 'Ziraat') {
+                          color = 'volcano';
+                        }
+                        if (tag === 'Finans') {
+                          color = 'green';
+                        }
+                        if (tag === 'Ziraat Teknoloji') {
+                          color = 'blue';
+                        }
+                        if (tag === 'Yazılım') {
+                          color = 'purple';
+                        }
+                        return (
+                          <Tag color={color} key={i}>
+                            {tag}
+                          </Tag>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p>Belirtilmedi</p>
+                  )}
+
+                </Card>
+              ))}
+            </Space>
+          </div>
+        </Col>
+
+        <Col span={6}>
+          <h3 className='h3' >Done</h3>
+          <div className="space-style">
+            <Space direction="vertical" size="middle" >
+              {Done.map((kart, index) => (
+                <Card className='Card' key={index} title={kart.type} >
+                  <p>Görev Adı: {kart.projectName}</p>
+                  <p>Görev Amacı: {kart.projectGoal}</p>
+                  <p>Görevin Büyüklüğü: {kart.taskType ?? "Belirtilmedi"}</p>
+
+                  {kart.tags && kart.tags.length > 0 ? (
+                    <div>
+                      {kart.tags.map((tag: string, i: number) => {
+                        let color = tag.length > 5 ? 'geekblue' : 'green';
+                        if (tag === 'Ziraat') {
+                          color = 'volcano';
+                        }
+                        if (tag === 'Finans') {
+                          color = 'green';
+                        }
+                        if (tag === 'Ziraat Teknoloji') {
+                          color = 'blue';
+                        }
+                        if (tag === 'Yazılım') {
+                          color = 'purple';
+                        }
+                        return (
+                          <Tag color={color} key={i}>
+                            {tag}
+                          </Tag>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p>Belirtilmedi</p>
+                  )}
+
+                </Card>
+              ))}
+            </Space>
+          </div>
+        </Col>
 
       </Row>
     </>
   );
 };
 
-export default Kartlar;
+export default Kartlar

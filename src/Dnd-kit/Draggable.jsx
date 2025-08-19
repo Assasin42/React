@@ -6,7 +6,7 @@ export function Draggable(props) {
     id: 'draggable',
   });
   const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    transform: `translate3d(${transform.g}px, ${transform.y}px, 0)`,
   } : undefined;
 
   

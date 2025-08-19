@@ -22,10 +22,11 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "root": true,
+    "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-unused-vars": "off"
+  }
   },
   "browserslist": {
     "production": [
