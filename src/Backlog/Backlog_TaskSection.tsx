@@ -6,20 +6,19 @@ import Item from 'antd/es/list/Item';
 
 type ListelerProps = {
   data: IKart[];
-  filterType: string | null;
-  status:StatusId;
+  status?:StatusId;
 };
 
 
 
-const Mytask: React.FC<ListelerProps> = (props: ListelerProps) => {
-  const [data, setData] = useState<any>(props.data);
+const Mytask: React.FC<ListelerProps> = ({data}) => {
+
 
   const handleDelete = (keyToDelete: string) => {
     const newData = data.filter((item: any) => item.key !== keyToDelete);
-    setData(newData);
+ console.log("Silinecek:", keyToDelete, newData);
   };
-  const columns: TableProps<any>['columns'] = [
+  const columns: TableProps<IKart>['columns'] = [
     {
       title: 'Tür',
       dataIndex: 'type',
@@ -78,7 +77,7 @@ const Mytask: React.FC<ListelerProps> = (props: ListelerProps) => {
     {
       title: 'Action',
       key: 'action',
-      render: (_, record) => (
+      render: (_, record:any) => (
         <Space size="middle">
           <a>Güncelle {record.name}</a>
           <a onClick={() => handleDelete(record.key)}>Delete</a>
@@ -87,7 +86,7 @@ const Mytask: React.FC<ListelerProps> = (props: ListelerProps) => {
     },
   ];
 
-  return <Table<any> columns={columns} dataSource={data} />;
+  return <Table<any> columns={columns} dataSource={data} rowKey={(record) => record._id} />;
 };
 
 export default Mytask;

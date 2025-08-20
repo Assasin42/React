@@ -1,9 +1,10 @@
 
 import axios from "axios";
 import { IKart, StatusId } from "./MyMenu";
+import message from "antd/es/message";
 
 export const fetchKartlar = async () => {
-	const res = await axios.get("http://localhost:3001/api/card");
+	const res = await axios.get("http://localhost:3001/api/backlogcards");
 	return res.data;
 };
 
@@ -36,6 +37,7 @@ export const veriGonder = async (formData: any) => {
 	// Gönderilen statüye göre güncelle
 	if (postData.status === StatusId.Open) {
 		fetchKartlar();
+		
 	} else if (postData.status === StatusId.Todo) {
 		fetchTodo();
 	} else if (postData.status === StatusId.InProcess) {
@@ -47,5 +49,6 @@ export const veriGonder = async (formData: any) => {
 	} else {
 		fetchProjeler();
 	}
+	
 	return res.data;
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Select, Radio, Flex, Button } from 'antd';
+import { Form, Input, Select, Radio, Flex, Button, message, notification } from 'antd';
 import MyTag from './tags';
 
 
@@ -9,6 +9,7 @@ const { Option } = Select;
 const MyMiniForm: React.FC<any> = (props:any) => {
   const [form] = Form.useForm();
   const [type, setType] = useState<string | undefined>(undefined);
+  const [messageApi, contextHolder] = message.useMessage();
   /*****************/
   const handleTypeChange = (value: string) => {
     setType(value);
@@ -18,7 +19,18 @@ const MyMiniForm: React.FC<any> = (props:any) => {
   const onFinish = (values: any) => {
     console.log('Form verisi:', values);
     props.veriGonder(values);
+   // formu sıfırlamak için
+    setTimeout(() => {
+      messageApi.open({
+        
+        type: 'success',
+        content: 'Veri gönderildi!',
+        duration: 1,
+      });
+    }, 1000);
+  
 
+  form.resetFields();
   };
 
   return (
@@ -78,9 +90,12 @@ const MyMiniForm: React.FC<any> = (props:any) => {
 
       )}
       <Form.Item>
-        <Button type="primary" disabled={!type} htmlType="submit">
+        <>
+        {contextHolder}
+        <Button type="primary"  disabled={!type} htmlType="submit">
           Gönder
         </Button>
+        </>
       </Form.Item>
     </Form>
   );

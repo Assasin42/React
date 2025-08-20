@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Layout, Menu, Modal, theme } from 'antd';
 import MyMiniForm from './Form/MyMiniform';
 import Kartlar from './Cards';
-import { fetchDone,fetchInProcess,fetchInreviev,fetchKartlar,fetchProjeler,fetchTodo,veriGonder } from './Api';
+import { fetchDone, fetchInProcess, fetchInreviev, fetchKartlar, fetchProjeler, fetchTodo, veriGonder } from './Api';
 
 import MyList from './Project/Projects_section';
 import Backlog from './Backlog/Backlog';
@@ -40,7 +40,7 @@ const MyMenu: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<number>(1);
   const [filterType, setFilterType] = useState<string>('görev');
   const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
@@ -120,7 +120,7 @@ const MyMenu: React.FC = () => {
                   borderRadius: 5,
                 }}
               >
-                {selectedTab == 1 ? <Kartlar /> : selectedTab == 2 ? <MyList /> : selectedTab == 3 ? <Backlog/> : null}
+                {selectedTab == 1 ? <Kartlar /> : selectedTab == 2 ? <MyList /> : selectedTab == 3 ? <Backlog  /> : null}
 
               </div>
             </Content>
